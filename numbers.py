@@ -8,36 +8,26 @@ phone_numbers = [
     '8801292432437',
 ]
 
-class Belief:
-    def __init__(self):
-        self.d = {}
+def response_factory():
+    responses = defaultdict(lambda: )
+    responses[0][''] = mc.DiscreteUniform('_', 0, 9)
+    return responses
 
-    def add(self, phone_number):
-        for i in range(1, len(phone_number) - 1):
-            self.d[phone_number[:i]] = mc.DiscreteUniform('_' + pn, 0, 9)
+def add(responses, phone_number):
+    for i in range(1, len(phone_number) - 1):
+        if phone_number[:i] not in responses[i]:
+            responses[i][phone_number[:i]] = mc.DiscreteUniform('_' + phone_number[:i], 0, 9)
+    return responses
 
-    def select
+def select(responses):
+    n = 13
+    phone_number = ''
+    for i in range(0, n):
+        digit = responses[i][phone_number].random()
+        phone_number += str(digit)
+    return phone_number
 
-    @mc.deterministic
-    def lambda_(tau=tau, lambda_1=lambda_1, lambda_2=lambda_2):
-        out = np.zeros(n_data_points)
-        out[tau:] = lambda_2  # lambda after tau is lambda1
-        return out"
-
-def train(belief, phone_number):
-    for pn in partials(phone_number):
-        if pn not in belief:
-            belief[pn] = mc.DiscreteUniform('_' + pn, 0, 9)
-
-    return belief
-
-def partials(phone_number):
-    out = set()
-    for i in range(0, len(phone_number)):
-        out.add(phone_number[:i])
-    return out
-
-pns = partial_numbers(phone_numbers)
-distributions = {pn:  for pn in pns}
-
-def
+responses = response_factory()
+for pn in phone_numbers:
+    responses = add(responses, pn)
+print select(responses)
