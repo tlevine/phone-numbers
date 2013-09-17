@@ -1,21 +1,24 @@
 '''Let's do this with a normal approximation.'''
-from collections import Counter
-
-class PhoneCounter(Counter):
+class PhoneCounter(set):
     def prefixed(self, prefix):
         'Phone numbers with a prefix'
-        return filter(lambda key: key.startswith(prefix), self.keys())
+        return filter(lambda key: key.startswith(prefix), self)
 
     def prefixes(self, phone_number):
         'Prefixes of a phone number'
-        return filter(lambda key: phone_number.startswith(key), self.keys())
+        return filter(lambda key: phone_number.startswith(key), self)
 
     def next_prefixes(self, prefix):
-        return filter(lambda key: key[:-1] == prefix, self.keys())
+        return filter(lambda key: key[:-1] == prefix, self)
 
-    def add(self, phone_number):
+    def counts(self, prefix = ''):
+        return {p:len(self.prefixed(p)) for p in self.next_prefixes(prefix)}
+
+    def random(self, prefix = '')
+
+    def add_phone_number(self, phone_number):
         for i in range(1, len(phone_number)):
-            self.update([phone_number[:i]])
+            self.add(phone_number[:i])
 
 def sort(strings):
     return sorted(strings, cmp = _cmp_len)
@@ -38,4 +41,4 @@ phone_numbers = [
 ]
 c = PhoneCounter()
 for phone_number in phone_numbers:
-    c.add(phone_number)
+    c.add_phone_number(phone_number)
