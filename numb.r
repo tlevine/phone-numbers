@@ -7,30 +7,45 @@ phone.us.srs <- function() {
 
 #' param phone numbers (character)
 #' output data frame
-as.data.frame.phone.number <- function(phone.numbers, response) {
+as.data.frame.phone.number <- function(phone.numbers, response = NA) {
   df <- ldply(strsplit(phone.numbers, split = ''))
   df$V1 <- paste0(df$V1, df$V2, df$V3)
   df$V2 <- df$V3 <- NULL
   names(df) <- c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10')
-  df$response <- response
+  if (!is.na(response)) {
+    df$response <- response
+  }
   df
 }
 
-n <- 100
-response <- as.logical(rbinom(n, 1, 0.3))
-numbers <- as.data.frame.phone.number(replicate(n, phone.us.srs()), response)
+test <- function() {
+  n <- 100
+  response <- as.logical(rbinom(n, 1, 0.3))
+  numbers <- as.data.frame.phone.number(replicate(n, phone.us.srs()), response)
 
 
-fit.classify <- rpart(
-  response ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
-  method="class", data = numbers)
+  fit.classify <- rpart(
+    response ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
+    method="class", data = numbers)
 
-numbers.count <- ddply(numbers,
-  c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10'), function(df) {
-  c(response.count = sum(df$response))
-})
+  numbers.count <- ddply(numbers,
+    c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10'), function(df) {
+    c(response.count = sum(df$response))
+  })
 
 
+  fit.regress <- rpart(
+    response.count ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
+    method = 'anova', data = numbers.count)
+
+  list(
+    fit.classify = fit.classify,
+    fit.regress = fit.regress
+  )
+}
+
+responding.numbers <- as.data.frame.phone.number(
+  read.csv('foobar.csv', header = FALSE)[,1])
 fit.regress <- rpart(
   response.count ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
-  method = 'anova', data = numbers.count)
+  method = 'anova', data = responding.numbers)
