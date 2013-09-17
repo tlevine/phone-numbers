@@ -1,5 +1,6 @@
 library(plyr)
 library(rpart)
+library(Deducer)
 
 phone.us.srs <- function() {
   paste(c('001', sample(0:9, replace = TRUE)), collapse = '')
@@ -44,8 +45,13 @@ test <- function() {
   )
 }
 
-responding.numbers <- as.data.frame.phone.number(
-  read.csv('foobar.csv', header = FALSE)[,1])
+
+bangladesh <- read.csv('Bangladesh.csv', header = FALSE, colClasses=c("character"))[,1]
+responding.numbers <- as.data.frame.phone.number(bangladesh[nchar(bangladesh) == 13])
+responding.numbers.counts <- ddply(responding.numbers,
+      c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10'), function(df) {
+        c(response.count = sum(df$response))
+      })
 fit.regress <- rpart(
   response.count ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
-  method = 'anova', data = responding.numbers)
+  method = 'anova', data = responding.numbers.counts)
