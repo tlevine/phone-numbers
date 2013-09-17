@@ -1,11 +1,5 @@
 '''Let's do this with a normal approximation.'''
 from collections import Counter
-phone_numbers = [
-    '8801292432439',
-    '8801292432694',
-    '8801292432275',
-    '8801292432437',
-]
 
 class PhoneCounter(Counter):
     def prefixed(self, prefix):
@@ -14,26 +8,34 @@ class PhoneCounter(Counter):
 
     def prefixes(self, phone_number):
         'Prefixes of a phone number'
-        keys = filter(lambda key: phone_number.startswith(key), self.keys())
+        return filter(lambda key: phone_number.startswith(key), self.keys())
 
+    def next_prefixes(self, prefix):
+        return filter(lambda key: key[:-1] == prefix, self.keys())
 
-def branch(subbranch,
+    def add(self, phone_number):
+        for i in range(1, len(phone_number)):
+            self.update([phone_number[:i]])
 
-def count_factory():
-    return (0, defaultdict(count_factory))
+def sort(strings):
+    return sorted(strings, cmp = _cmp_len)
 
-def partial_numbers(phone_number, end = None):
-    if end == None:
-        end = len(phone_number)
-    return [phone_number[-i:] for i in range(1, end)]
+def _cmp_len(a,b):
+    la = len(a)
+    lb = len(b)
+    if la > lb:
+        return 1
+    elif la < lb:
+        return -1
+    else:
+        return 0
 
-def add(counts, phone_number):
-    for i in range(0, len(phone_number)):
-        for p in partial_numbers(phone_number, i):
-            counts[p][0] += 1
-            counts[p][1] += 1
-
-    return counts
-
-def predict(counts, phone_number):
-    partial_numbers(phone_number)
+phone_numbers = [
+    '8801292432439',
+    '8801292432694',
+    '8801292432275',
+    '8801292432437',
+]
+c = PhoneCounter()
+for phone_number in phone_numbers:
+    c.add(phone_number)
