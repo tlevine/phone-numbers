@@ -21,5 +21,16 @@ response <- as.logical(rbinom(n, 1, 0.3))
 numbers <- as.data.frame.phone.number(replicate(n, phone.us.srs()), response)
 
 
-fit <- rpart(response ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
+fit.classify <- rpart(
+  response ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
   method="class", data = numbers)
+
+numbers.count <- ddply(numbers,
+  c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10'), function(df) {
+  c(response.count = sum(df$response))
+})
+
+
+fit.regress <- rpart(
+  response.count ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
+  method = 'anova', data = numbers.count)
