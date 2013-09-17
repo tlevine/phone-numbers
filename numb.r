@@ -1,4 +1,5 @@
 library(plyr)
+library(rpart)
 
 phone.us.srs <- function() {
   paste(c('001', sample(0:9, replace = TRUE)), collapse = '')
@@ -18,3 +19,7 @@ as.data.frame.phone.number <- function(phone.numbers, response) {
 n <- 100
 response <- as.logical(rbinom(n, 1, 0.3))
 numbers <- as.data.frame.phone.number(replicate(n, phone.us.srs()), response)
+
+
+fit <- rpart(response ~ country + d1 + d2 + d3 + d4 + d5 + d6 + d7 + d8 + d9 + d10,
+  method="class", data = numbers)
