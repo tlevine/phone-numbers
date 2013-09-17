@@ -6,13 +6,15 @@ phone.us.srs <- function() {
 
 #' param phone numbers (character)
 #' output data frame
-as.data.frame.phone.number <- function(phone.numbers) {
+as.data.frame.phone.number <- function(phone.numbers, response) {
   df <- ldply(strsplit(phone.numbers, split = ''))
   df$V1 <- paste0(df$V1, df$V2, df$V3)
   df$V2 <- df$V3 <- NULL
   names(df) <- c('country','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10')
-  df$response <- as.logical(rbinom(nrow(df), 1, 0.3))
+  df$response <- response
   df
 }
 
-numbers <- as.data.frame.phone.number(replicate(100, phone.us.srs()))
+n <- 100
+response <- as.logical(rbinom(n, 1, 0.3))
+numbers <- as.data.frame.phone.number(replicate(n, phone.us.srs()), response)
