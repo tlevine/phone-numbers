@@ -13,3 +13,8 @@ methods we might use.
 
 * http://www.statmethods.net/advstats/cart.html
 * http://scikit-learn.org/stable/modules/tree.html
+
+In our initial implimentation, we use a classification tree
+that does not preserve knowledge of the order of the variables.
+Preserving that knowledge should be trivial and beneficial,
+but we haven't done it yet.
