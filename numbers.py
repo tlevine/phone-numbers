@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pymc as mc
 
 phone_numbers = [
@@ -7,12 +8,20 @@ phone_numbers = [
     '8801292432437',
 ]
 
-def partial_numbers(phone_numbers):
+def train(belief, phone_number):
+    for pn in partials(phone_number):
+        if pn not in belief:
+            belief[pn] = mc.DiscreteUniform('_' + pn, 0, 9)
+
+    return belief
+
+def partials(phone_number):
     out = set()
-    for phone_number in phone_numbers:
-        for i in range(0, len(phone_number)):
-            out.add(phone_number[:i])
+    for i in range(0, len(phone_number)):
+        out.add(phone_number[:i])
     return out
 
 pns = partial_numbers(phone_numbers)
-distributions = {pn: mc.DiscreteUniform(pn, 0, 9) for pn in pns}
+distributions = {pn:  for pn in pns}
+
+def
