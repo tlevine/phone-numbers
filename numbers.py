@@ -17,13 +17,15 @@ def add(responses, phone_number):
     return responses
 
 def ml_estimate(counter):
-    s = sum(counter.values())
-    return [counter[digit]/s for digit in range(0,9)]
+    s = 0.0 + sum(counter.values())
+    return [(counter[digit] + 0.0)/s for digit in range(0,10)]
 
 responses = response_factory()
 for pn in phone_numbers:
     responses = add(responses, pn)
 print responses['880129243']
 
-
-d = mc.Categorical('d', ml_estimate(responses['880129243']))
+d = {}
+for key in responses.keys():
+    print key
+    d[key] = mc.Categorical('_' + key, ml_estimate(responses[key]))
