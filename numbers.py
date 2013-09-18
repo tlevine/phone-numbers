@@ -8,19 +8,22 @@ phone_numbers = [
     '8801292432437',
 ]
 
-def digit_distribution(values):
-    return mc.Categorical('d', values)
-
 def response_factory():
-    return defaultdict(lambda: defaultdict(Counter))
+    return defaultdict(Counter)
 
 def add(responses, phone_number):
     for i in range(0, len(phone_number) - 1):
-        next_digit = int(phone_number[i + 1])
-        responses[i][phone_number[:i]].update([next_digit])
+        responses[phone_number[:i]].update([int(phone_number[i])])
     return responses
+
+def ml_estimate(counter):
+    s = sum(counter.values())
+    return [counter[digit]/s for digit in range(0,9)]
 
 responses = response_factory()
 for pn in phone_numbers:
     responses = add(responses, pn)
-print responses[3]['880']
+print responses['880129243']
+
+
+d = mc.Categorical('d', ml_estimate(responses['880129243']))
