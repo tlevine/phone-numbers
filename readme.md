@@ -1,20 +1,21 @@
-Choose random phone numbers, get responses,
-and then choose better ones, optimizing for
-response rate.
+Most phone numbers are not active, so we expect a
+rather low response rate when we use random phone
+numbers to sample people. This gets expensive.
 
-We make a table that looks like this.
+To improve our response rate, we select numbers
+based on historical responses. `phone.py` selects
+new random numbers based on historically responsive
+phone numbers.
 
-    country,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,response
-    01,     1, 2, 1, 2, 1, 4, 3, 4, 5, 6,  FALSE
-    01,     1, 2, 1, 2, 1, 2, 3, 8, 4, 2,  TRUE
+This is how you generate 20 numbers based on the `BG_10K_12.csv` file.
 
-Then we build a decision tree. Here are some
-methods we might use.
+    ./phone.py BG_10K_12.csv 20
 
-* http://www.statmethods.net/advstats/cart.html
-* http://scikit-learn.org/stable/modules/tree.html
+## To do
 
-In our initial implimentation, we use a classification tree
-that does not preserve knowledge of the order of the variables.
-Preserving that knowledge should be trivial and beneficial,
-but we haven't done it yet.
+1. Explain how it works
+2. Make pretty visuals to see what the groupings are;
+    local area codes and lucky numbers will pop out.
+3. Consider whether short phone numbers should be handled differently.
+4. Improve the smoothing algorithm
+    Currently it's just +1 smoothing, and it doesn't handle short phone numbers.
