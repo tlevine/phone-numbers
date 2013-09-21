@@ -2,7 +2,6 @@ from collections import defaultdict, Counter
 
 import pymc
 
-
 def observations():
     return defaultdict(Counter)
 
