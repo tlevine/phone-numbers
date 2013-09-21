@@ -41,6 +41,9 @@ def weight(counter):
     >>> weight({'a': 8, 'b': 2})
     {'a': 0.8, 'b': 0.2}
     '''
+    s = float(sum(counter.values()))
+    return {k: float(v)/s for k, v in counter.items()}
+
 
 def choose_next_digit(observations, partial_number):
     weights = smooth(observations[partial_number])
