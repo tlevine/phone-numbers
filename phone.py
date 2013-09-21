@@ -46,9 +46,15 @@ def weight(counter):
 
 
 def choose_next_digit(observations, partial_number):
-    weights = smooth(observations[partial_number])
-    pymc.Categorical
+    w = weight(smooth(observations[partial_number]))
+    dist = pymc.Categorical('digit', w.values())
+    result = dist.random()
+    return w.keys()[result]
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+    o = observations_factory()
+    o = observe_phone_number(o, '1' + '212' + '888999')
+    print choose_next_digit(o, '12128')
