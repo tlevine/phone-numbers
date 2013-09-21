@@ -1,3 +1,5 @@
+from collections import Counter
+
 import nose.tools as n
 
 import phone
@@ -28,3 +30,9 @@ def test_weight():
     o = phone.weight({'a': 8, 'b': 2})
     e = {'a': 0.8, 'b': 0.2}
     n.assert_dict_equal(o, e)
+
+def test_is_valid():
+    n.assert_true(phone.is_valid('001' + '212' + '123' + '1234'))
+    n.assert_false(phone.is_valid('1' + '212' + '123' + '1234'))
+    n.assert_false(phone.is_valid(range(13)))
+    n.assert_false(phone.is_valid('a' * 13))
