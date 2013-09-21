@@ -18,3 +18,8 @@ def test_observe_phone_number():
         '121212348': {'8': 1},
     }
     n.assert_dict_equal(o, e)
+
+def test_smooth():
+    o = phone.smooth(Counter('bcb'), keys = 'abcde')
+    e = Counter({'b': 3, 'c': 2, 'a': 1, 'e': 1, 'd': 1})
+    n.assert_dict_equal(o, e)
