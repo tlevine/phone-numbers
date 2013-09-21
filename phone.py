@@ -15,12 +15,12 @@ def smooth(counter, keys = map(str, range(10))):
     '''
     Apply +1 smoothing to a counter.
 
-    >>> smooth(Counter('bcb'), 'abcde')
-    Counter('abcdebcb')
+    >>> smooth(Counter('bcb'), keys = 'abcde')
+    Counter({'b': 3, 'c': 2, 'a': 1, 'e': 1, 'd': 1})
 
     '''
     smoothed_counter = Counter(counter)
-    smoothed_counter.update(smoothed_counter.keys())
+    smoothed_counter.update(keys)
     return smoothed_counter
 
 def weight(counts):
