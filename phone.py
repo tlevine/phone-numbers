@@ -20,7 +20,7 @@ def smooth(counter, keys = map(str, range(10))):
 
     '''
     smoothed_counter = Counter(counter)
-    smoothed_counter.update(smoothed_counter.keys()
+    smoothed_counter.update(smoothed_counter.keys())
     return smoothed_counter
 
 def weight(counts):
@@ -29,3 +29,7 @@ def weight(counts):
 def choose_next_digit(observations, partial_number):
     weights = smooth(observations[partial_number])
     pymc.Categorical
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
