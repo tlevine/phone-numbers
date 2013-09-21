@@ -51,6 +51,36 @@ def choose_next_digit(observations, partial_number):
     result = dist.random()
     return w.keys()[result]
 
+def is_valid(phone_number):
+    '''
+    Check whether a phone number is valid.
+
+    Args:
+        phone_number: A phone number to be validated
+    Returns:
+        True or False
+
+    Phone numbers must be 13 digits long.
+
+    >>> is_valid('12120000000')
+    False
+
+    >>> is_valid('0012120000000')
+    True
+
+    Phone numbers must be string-like.
+
+    >>> is_valid([0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0])
+    False
+
+    Phone numbers may only contain the characters [0-9]
+
+    >>> is_valid('001212000000b')
+    False
+
+    '''
+    return True
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
