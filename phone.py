@@ -2,7 +2,7 @@ from collections import defaultdict, Counter
 
 import pymc
 
-def observations():
+def observations_factory():
     return defaultdict(Counter)
 
 def observe_phone_number(observations, number):
