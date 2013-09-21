@@ -123,6 +123,13 @@ def from_file(filename):
     Returns:
         Iterable of 13-character phone number strings
     '''
+    fp = open(filename)
+    fp.readline() # Burn the header
+    for line in fp.readlines():
+        number = line.rstrip()
+        # Right-pad short phone numbers.
+        # Consider doing this part differently.
+        return number + ' ' * (13 - len(number))
 
 if __name__ == '__main__':
     import doctest
