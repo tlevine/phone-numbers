@@ -60,13 +60,22 @@ def is_valid(phone_number):
     Returns:
         True or False
 
-    Phone numbers must be 13 digits long.
+    Phone numbers must be 13 characters long.
 
     >>> is_valid('12120000000')
     False
 
     >>> is_valid('0012120000000')
     True
+
+    Phone numbers that are shorter than 13 characters should
+    be padded with spaces on the right.
+
+    >>> is_valid('88011111111  ')
+    True
+
+    >>> is_valid('  88011111111')
+    False
 
     Phone numbers must be string-like.
 
@@ -107,6 +116,7 @@ def pretty_print(phone_number):
 
 def run(phone_numbers, how_many_new_numbers):
     o = observations_factory()
+    print phone_numbers
     for phone_number in phone_numbers:
         if not is_valid(phone_number):
             raise ValueError('"%s" is not a valid phone number.' % phone_number)
@@ -129,7 +139,7 @@ def from_file(filename):
         number = line.rstrip()
         # Right-pad short phone numbers.
         # Consider doing this part differently.
-        return number + ' ' * (13 - len(number))
+        yield number + ' ' * (13 - len(number))
 
 if __name__ == '__main__':
     import doctest
