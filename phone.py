@@ -86,7 +86,9 @@ def is_valid(phone_number):
     else:
         return len(phone_number) == 13 and all(map(lambda x: x in '0123456789', phone_number))
 
-def load_phone_numbers(filename):
+def load_phone_numbers(filename_or_list):
+    if hasattr(filename_or_list, '__len__'):
+        return filename_or_list
     return ['0' * 13, '8' * 13]
 
 def generate_number(observations):
@@ -103,12 +105,9 @@ def pretty_print(phone_number):
     return plus
 
 
-def main():
-    filename = '/tmp/a' # sys.argv[1]
-    how_many_new_numbers = 3 # int(sys.argv[2])
-
+def run(phone_numbers, how_many_new_numbers):
     o = observations_factory()
-    for phone_number in load_phone_numbers(open(filename)):
+    for phone_number in phone_numbers:
         if not is_valid(phone_number):
             raise ValueError('"%s" is not a valid phone number.' % phone_number)
 
@@ -117,7 +116,28 @@ def main():
     for i in range(how_many_new_numbers):
         print pretty_print(generate_number(o))
 
+def from_file(filename):
+    '''
+    Args:
+        filename: Name of a file containing phone numbers in the particular format
+    Returns:
+        Iterable of 13-character phone number strings
+    '''
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-    main()
+
+    import sys
+
+    if len(sys.argv) == 1:
+        filename = 'BG_10K_12.csv'
+        how_many_new_numbers = 7
+    elif len(sys.argv) == 3:
+        filename = sys.argv[1]
+        how_many_new_numbers = int(sys.argv[2])
+    else:
+        print 'USAGE: %s [[phone numbers file] [how many numbers to generate]]' % sys.argv[0]
+        exit(1)
+
+    run(from_file(filename), how_many_new_numbers)
