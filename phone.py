@@ -11,7 +11,7 @@ def observe_phone_number(observations, number):
         observations[number[:i]].update(number[i])
     return observations
 
-def smooth(counter, keys = map(str, range(10))):
+def smooth(counter, keys = '0123456789'):
     '''
     Apply +1 smoothing to a counter.
 
@@ -90,7 +90,18 @@ def load_phone_numbers(filename):
     return ['0' * 13, '8' * 13]
 
 def generate_number(observations):
-    choose_next_digit(o, '12128')
+    number = choose_next_digit(observations, '')
+    while len(number) < 13:
+        number += choose_next_digit(observations, number)
+    return number
+
+import re
+def pretty_print(phone_number):
+    spaced = ' '.join([phone_number[:3], phone_number[3:6], phone_number[6:9], phone_number[9:13]])
+    unpadded = re.sub(r'^0', ' ', re.sub(r'^00', r'  ', spaced))
+    plus = re.sub(r'^( *)([0-9])', r'\1+\2', unpadded)
+    return plus
+
 
 def main():
     filename = '/tmp/a' # sys.argv[1]
@@ -103,8 +114,8 @@ def main():
 
         o = observe_phone_number(o, phone_number)
 
-    for i in how_many_new_numbers():
-        print generate_number(observations)
+    for i in range(how_many_new_numbers):
+        print pretty_print(generate_number(o))
 
 if __name__ == '__main__':
     import doctest
