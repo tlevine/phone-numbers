@@ -79,7 +79,12 @@ def is_valid(phone_number):
     False
 
     '''
-    return True
+    try:
+        '' + phone_number
+    except:
+        return False
+    else:
+        return len(phone_number) == 13 and all(map(lambda x: x in '0123456789', phone_number))
 
 if __name__ == '__main__':
     import doctest
