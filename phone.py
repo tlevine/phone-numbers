@@ -29,8 +29,18 @@ def smooth(counter, keys = map(str, range(10))):
     smoothed_counter.update(keys)
     return smoothed_counter
 
-def weight(counts):
-    'Turn counts into weights.'
+def weight(counter):
+    '''
+    Turn counts into weights.
+
+    Args:
+        counter: A dictionary to be weighted
+    Returns:
+        A dictionary mapping keys to weights, where weights sum to one.
+
+    >>> weight({'a': 8, 'b': 2})
+    {'a': 0.8, 'b': 0.2}
+    '''
 
 def choose_next_digit(observations, partial_number):
     weights = smooth(observations[partial_number])
