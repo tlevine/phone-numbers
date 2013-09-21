@@ -86,10 +86,27 @@ def is_valid(phone_number):
     else:
         return len(phone_number) == 13 and all(map(lambda x: x in '0123456789', phone_number))
 
+def load_phone_numbers(filename):
+    return ['0' * 13, '8' * 13]
+
+def generate_number(observations):
+    choose_next_digit(o, '12128')
+
+def main():
+    filename = '/tmp/a' # sys.argv[1]
+    how_many_new_numbers = 3 # int(sys.argv[2])
+
+    o = observations_factory()
+    for phone_number in load_phone_numbers(open(filename)):
+        if not is_valid(phone_number):
+            raise ValueError('"%s" is not a valid phone number.' % phone_number)
+
+        o = observe_phone_number(o, phone_number)
+
+    for i in how_many_new_numbers():
+        print generate_number(observations)
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
-    o = observations_factory()
-    o = observe_phone_number(o, '1' + '212' + '888999')
-    print choose_next_digit(o, '12128')
+    main()
