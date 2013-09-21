@@ -92,8 +92,8 @@ def is_valid(phone_number):
         '' + phone_number
     except:
         return False
-    else:
-        return len(phone_number) == 13 and all(map(lambda x: x in '0123456789', phone_number))
+
+    return len(phone_number) == 13 and all(map(lambda x: x in '0123456789', phone_number.rstrip(' ')))
 
 def load_phone_numbers(filename_or_list):
     if hasattr(filename_or_list, '__len__'):
@@ -116,7 +116,6 @@ def pretty_print(phone_number):
 
 def run(phone_numbers, how_many_new_numbers):
     o = observations_factory()
-    print phone_numbers
     for phone_number in phone_numbers:
         if not is_valid(phone_number):
             raise ValueError('"%s" is not a valid phone number.' % phone_number)
