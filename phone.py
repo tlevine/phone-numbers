@@ -1,4 +1,4 @@
-from collections import defaultdict, Counter
+from collections import defaultdict, Counter, OrderedDict
 from random import uniform
 
 def categoricalvariate(w, x = None):
@@ -8,8 +8,13 @@ def categoricalvariate(w, x = None):
     Returns:
         One of the keys, chosen randomly
 
+    >>> categoricalvariate(OrderedDict([('0', 0.3), ('1', 0.6), ('2', 0.1)]), x = 0.98)
+    '2'
 
-    >>> categoricalvariate({'0': 0.3, '1': 0.7}, x = 0.5)
+    >>> categoricalvariate(OrderedDict([('0', 0.3), ('1', 0.6), ('2', 0.1)]), x = 0.1)
+    '0'
+
+    >>> categoricalvariate(OrderedDict([('0', 0.3), ('1', 0.6), ('2', 0.1)]), x = 0.5)
     '1'
     '''
     if x == None:
@@ -177,4 +182,4 @@ def main():
 
 if __name__ == '__main__':
     test()
-    main()
+    # main()
