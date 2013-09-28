@@ -1,6 +1,28 @@
 from collections import defaultdict, Counter
+from random import uniform
 
-import pymc
+def categoricalvariate(w, x = None):
+    '''
+    Args:
+        values: A dictionary mapping keys to weights, where weights sum to one.
+    Returns:
+        One of the keys, chosen randomly
+
+
+    >>> categoricalvariate({'0': 0.3, '1': 0.7}, x = 0.5)
+    '1'
+    '''
+    if x == None:
+        x = uniform(0, 1)
+
+    k = sorted(w.keys())
+    v = sorted(w.values())
+    cdf = reduce(lambda a, b: a + [a[-1] + b], v[1:], [v[0]])
+    for _k, _cdf in zip(k, cdf):
+        if x < _cdf:
+            return _k
+    else:
+        return _k
 
 def observations_factory():
     return defaultdict(Counter)
@@ -47,9 +69,7 @@ def weight(counter):
 
 def choose_next_digit(observations, partial_number):
     w = weight(smooth(observations[partial_number]))
-    dist = pymc.Categorical('digit', w.values())
-    result = dist.random()
-    return w.keys()[result]
+    return categoricalvariate(w)
 
 def is_valid(phone_number):
     '''
@@ -140,10 +160,11 @@ def from_file(filename):
         # Consider doing this part differently.
         yield number + ' ' * (13 - len(number))
 
-if __name__ == '__main__':
+def test():
     import doctest
     doctest.testmod()
 
+def main():
     import sys
 
     if len(sys.argv) == 1:
@@ -157,3 +178,7 @@ if __name__ == '__main__':
         exit(1)
 
     run(from_file(filename), how_many_new_numbers)
+
+if __name__ == '__main__':
+    test()
+    # main()
