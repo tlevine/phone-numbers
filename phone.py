@@ -15,14 +15,10 @@ def categoricalvariate(w, x = None):
     if x == None:
         x = uniform(0, 1)
 
-    k = sorted(w.keys())
-    v = sorted(w.values())
-    cdf = reduce(lambda a, b: a + [a[-1] + b], v[1:], [v[0]])
-    for _k, _cdf in zip(k, cdf):
+    cdf = reduce(lambda a, b: a + [a[-1] + b], w.values()[1:], [w.values()[0]])
+    for _k, _cdf in zip(w.keys(), cdf):
         if x < _cdf:
             return _k
-    else:
-        return _k
 
 def observations_factory():
     return defaultdict(Counter)
@@ -181,4 +177,4 @@ def main():
 
 if __name__ == '__main__':
     test()
-    # main()
+    main()
